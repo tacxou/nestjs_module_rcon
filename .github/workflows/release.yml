@@ -23,6 +23,8 @@ jobs:
   prepare-version:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.value }}
 
     steps:
       - name: Checkout code
@@ -54,6 +56,37 @@ jobs:
           git push origin v${{ steps.version.outputs.value }}
 
   release:
+    if: github.event_name == 'workflow_dispatch'
+    needs: prepare-version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run tests
+        run: bun test
+
+      - name: Build project
+        run: bun run build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.prepare-version.outputs.version }}
+          generate_release_notes: true
+
+  release-on-tag:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
