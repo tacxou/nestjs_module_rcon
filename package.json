@@ -1,6 +1,6 @@
 {
   "name": "@tacxou/nestjs_module_rcon",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "RCON module for NestJS Framework",
   "repository": "https://github.com/tacxou/nestjs_module_rcon.git",
   "author": "tacxou <12997062+tacxou@users.noreply.github.com> (https://github.com/tacxou)",
