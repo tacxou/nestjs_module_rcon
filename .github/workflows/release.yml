@@ -23,8 +23,6 @@ jobs:
   prepare-version:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.version.outputs.value }}
 
     steps:
       - name: Checkout code
@@ -40,82 +38,23 @@ jobs:
       - name: Bump package.json version
         run: npm version ${{ inputs.version_increment }} --no-git-tag-version
 
-      - name: Commit version bump
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'chore(release): bump version'
-          file_pattern: package.json
-
       - name: Read new version
         id: version
         run: echo "value=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Commit version bump
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore(release): bump version to ${{ steps.version.outputs.value }}'
+          file_pattern: package.json
 
       - name: Create and push tag
         run: |
           git tag v${{ steps.version.outputs.value }}
           git push origin v${{ steps.version.outputs.value }}
 
-  release:
-    if: github.event_name == 'workflow_dispatch'
-    needs: prepare-version
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Run tests
-        run: bun test
-
-      - name: Build project
-        run: bun run build
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ needs.prepare-version.outputs.version }}
-          generate_release_notes: true
-
   release-on-tag:
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Run tests
-        run: bun test
-
-      - name: Build project
-        run: bun run build
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-
-  publish:
-    needs: [release, release-on-tag]
-    if: always() && (needs.release.result == 'success' || needs.release-on-tag.result == 'success')
     runs-on: ubuntu-latest
 
     steps:
@@ -146,3 +85,8 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
