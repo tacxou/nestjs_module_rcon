@@ -42,7 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^8.50.0",
     "@typescript-eslint/parser": "^8.50.0",
     "cpr": "^3.0.1",
-    "eslint": "^8.56.0",
+    "eslint": "^10.0.2",
     "prettier": "^3.3.2",
     "rcon-client": "^4.2.4",
     "reflect-metadata": "^0.2.2",
