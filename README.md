@@ -12,6 +12,7 @@
   <a href="https://www.npmjs.com/org/The-Software-Compagny"><img src="https://img.shields.io/npm/v/@the-software-compagny/nestjs_module_rcon.svg" alt="NPM Version" /></a>
   <a href="https://www.npmjs.com/org/The-Software-Compagny"><img src="https://img.shields.io/npm/l/@the-software-compagny/nestjs_module_rcon.svg" alt="Package License" /></a>
   <a href="https://github.com/The-Software-Compagny/nestjs_module_rcon/actions/workflows/ci.yml"><img src="https://github.com/The-Software-Compagny/nestjs_module_rcon/actions/workflows/ci.yml/badge.svg" alt="Publish Package to npmjs" /></a>
+  <a href="https://codecov.io/github/tacxou/nestjs_module_rcon"><img src="https://codecov.io/github/tacxou/nestjs_module_rcon/graph/badge.svg?token=JZAaijmyoy"/></a>
 </p>
 <br>
 
