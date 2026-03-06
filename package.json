@@ -1,8 +1,8 @@
 {
-  "name": "@the-software-compagny/nestjs_module_rcon",
+  "name": "@tacxou/nestjs_module_rcon",
   "version": "1.2.1",
   "description": "RCON module for NestJS Framework",
-  "repository": "https://github.com/The-Software-Compagny/nestjs_module_rcon.git",
+  "repository": "https://github.com/tacxou/nestjs_module_rcon.git",
   "author": "tacxou <12997062+tacxou@users.noreply.github.com> (https://github.com/tacxou)",
   "contributors": [
     {
@@ -12,20 +12,35 @@
     },
     {
       "name": "Contributors",
-      "url": "https://github.com/The-Software-Compagny/nestjs_module_rcon/graphs/contributors"
+      "url": "https://github.com/tacxou/nestjs_module_rcon/graphs/contributors"
     }
   ],
   "license": "MIT",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc",
-    "postbuild": "cpr README.md dist/README.md && cpr LICENSE dist/LICENSE && cpr package.json dist/package.json"
+    "build": "bun build ./src/index.ts --outdir ./dist --target node --splitting --packages external",
+    "build:type": "tsc --emitDeclarationOnly",
+    "build:cpr": "cpr README.md dist/README.md && cpr LICENSE dist/LICENSE && cpr package.json dist/package.json",
+    "postbuild": "bun build:type && bun build:cpr",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage --coverage-reporter lcov"
   },
   "devDependencies": {
     "@nestjs/common": "^10.3.9",
     "@nestjs/core": "^10.3.9",
     "@types/node": "^22.5.5",
+    "@types/bun": "latest",
+    "@typescript-eslint/eslint-plugin": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.0",
     "cpr": "^3.0.1",
     "eslint": "^8.56.0",
     "prettier": "^3.3.2",
@@ -33,15 +48,19 @@
     "reflect-metadata": "^0.2.2",
     "rimraf": "^5.0.7",
     "rxjs": "^7.8.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "ts-node": "^10.9.2"
   },
   "peerDependencies": {
     "@nestjs/common": "^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0",
-    "@nestjs/core": "^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0"
+    "@nestjs/core": "^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0",
+    "typescript": "^5.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "engines": {
+    "node": ">=22.0.0",
+    "bun": ">=1.0.0"
+  },
+  "packageManager": "bun@1.2.2"
 }

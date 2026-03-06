@@ -8,7 +8,8 @@ export interface RconModuleOptions {
   failOnError: boolean
 }
 
-export { RconOptions, Rcon } from 'rcon-client'
+export type { RconOptions } from 'rcon-client'
+export { Rcon } from 'rcon-client'
 
 export interface RconModuleOptionsFactory {
   createRconModuleOptions(): Promise<RconModuleOptions> | RconModuleOptions
