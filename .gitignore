@@ -1,7 +1,20 @@
-node_modules/
-coverage/
-dist/
+*
+!.github/
+!src/
+!tests/
 
-yarn-debug.log*
-yarn-error.log*
-.env
+!.gitignore
+!.gitattributes
+!.npmrc
+!.prettierrc
+!.prettierignore
+!.eslintrc.js
+!.editorconfig
+!.tsconfig.json
+!.tsconfig.build.json
+!package.json
+!Makefile
+!README.md
+!SECURITY.md
+!LICENSE
+!bun.lock*
