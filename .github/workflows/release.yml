@@ -4,9 +4,6 @@ permissions:
   contents: write
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
     inputs:
       version_increment:
@@ -20,8 +17,7 @@ on:
           - 'patch'
 
 jobs:
-  prepare-version:
-    if: github.event_name == 'workflow_dispatch'
+  release:
     runs-on: ubuntu-latest
 
     steps:
@@ -49,17 +45,12 @@ jobs:
           file_pattern: package.json
 
       - name: Create and push tag
+        id: tag
         run: |
-          git tag v${{ steps.version.outputs.value }}
-          git push origin v${{ steps.version.outputs.value }}
-
-  release-on-tag:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+          tag="v${{ steps.version.outputs.value }}"
+          echo "value=$tag" >> $GITHUB_OUTPUT
+          git tag "$tag"
+          git push origin "$tag"
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
@@ -89,4 +80,5 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tag.outputs.value }}
           generate_release_notes: true
